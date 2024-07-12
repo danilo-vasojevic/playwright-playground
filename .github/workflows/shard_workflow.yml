@@ -64,17 +64,17 @@ jobs:
           name: playwright-report
           path: playwright-report
           retention-days: 1
-  publish:
-    if: always()
-    name: Push report to GH Pages
-    needs: [merge] # publish results after tests are done
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download artifacts
-        uses: actions/download-artifact@v4
-      - name: Publish to GH Pages
-        uses: peaceiris/actions-gh-pages@v4.0.0
-        if: always()
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: playwright-report/
+  # publish:
+  #   if: always()
+  #   name: Push report to GH Pages
+  #   needs: [merge] # publish results after tests are done
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Download artifacts
+  #       uses: actions/download-artifact@v4
+  #     - name: Publish to GH Pages
+  #       uses: peaceiris/actions-gh-pages@v4.0.0
+  #       if: always()
+  #       with:
+  #         github_token: ${{ secrets.GITHUB_TOKEN }}
+  #         publish_dir: playwright-report/
