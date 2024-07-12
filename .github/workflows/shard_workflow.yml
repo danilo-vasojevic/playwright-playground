@@ -31,7 +31,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: blob-report-${{matrix.shardIndex}}
+          name: all-blob-reports
           path: blob-report
           retention-days: 1
   merge:
