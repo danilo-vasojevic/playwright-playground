@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "dotenv": "^16.3.1",
-    "playwright": "1.41.2"
+    "playwright": "^1.45.1"
   },
   "devDependencies": {
     "@playwright/test": "1.41.2",
