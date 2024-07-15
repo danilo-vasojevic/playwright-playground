@@ -73,6 +73,8 @@ jobs:
     needs: [merge] # publish results after tests are done
     runs-on: ubuntu-latest
     steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
         with:
