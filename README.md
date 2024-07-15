@@ -4,8 +4,6 @@
 [![UI Tests split by sharding](https://github.com/danilo-vasojevic/pw_goes_pages/actions/workflows/shard_workflow.yml/badge.svg)](https://github.com/danilo-vasojevic/pw_goes_pages/actions/workflows/shard_workflow.yml)
 [![>>> - Latest report](https://img.shields.io/badge/>>>-Latest_report-2ea44f)](https://danilo-vasojevic.github.io/pw_goes_pages/)
 
-[![pages-build-deployment](https://github.com/danilo-vasojevic/pw_goes_pages/actions/workflows/pages/pages-build-deployment/badge.svg?branch=gh-pages)](https://github.com/danilo-vasojevic/pw_goes_pages/actions/workflows/pages/pages-build-deployment)
-
 ### Framework setup
 - [x] ~~Use Playwright to run UI tests~~
 - [x] ~~Use Typescript~~
