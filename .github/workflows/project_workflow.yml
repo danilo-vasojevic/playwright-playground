@@ -26,15 +26,11 @@ jobs:
         run: npx playwright test --project=${{matrix.project}}
         env:
           HOME: /root # Needed to run firefox tests
-      - name: Rename blob report
-        id: rename
-        if: always()
-        run: mv blob-report/report.zip blob-report/report-${{ matrix.project }}.zip
       - name: Upload blob report
         if: always()
         uses: actions/upload-artifact@v3
         with:
-          name: all-blob-reports
+          name: report-${{matrix.project}}
           path: blob-report
           retention-days: 1
   merge:
