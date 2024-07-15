@@ -26,16 +26,12 @@ jobs:
       - name: Run Playwright tests
         run: npx playwright test --shard=${{matrix.shardIndex}}/${{matrix.shardTotal}}
         env:
-          HOME: /root
-      - name: Rename blob report
-        id: rename
-        if: always()
-        run: mv blob-report/report.zip blob-report/report-${{ matrix.shardIndex }}.zip
+          HOME: /root # Needed to run firefox tests
       - name: Upload blob report
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: all-blob-reports
+          name: report-${{matrix.shardIndex}}
           path: blob-report
           retention-days: 1
   merge:
@@ -58,7 +54,8 @@ jobs:
         uses: actions/download-artifact@v4
         id: download
         with:
-          name: all-blob-reports
+          pattern: report-*
+          merge-multiple: true
           path: all-blob-reports
       - name: Merge into HTML Report
         run: npx playwright merge-reports --reporter html ./all-blob-reports
@@ -68,17 +65,18 @@ jobs:
           name: playwright-report
           path: playwright-report
           retention-days: 1
-  # publish:
-  #   if: always()
-  #   name: Push report to GH Pages
-  #   needs: [merge] # publish results after tests are done
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Download artifacts
-  #       uses: actions/download-artifact@v4
-  #     - name: Publish to GH Pages
-  #       uses: peaceiris/actions-gh-pages@v4.0.0
-  #       if: always()
-  #       with:
-  #         github_token: ${{ secrets.GITHUB_TOKEN }}
-  #         publish_dir: playwright-report/
+  publish:
+    if: always()
+    name: Push report to GH Pages
+    needs: [merge] # publish results after tests are done
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+      - name: Publish to GH Pages
+        uses: peaceiris/actions-gh-pages@v4
+        if: always()
+        with:
+          github_token: ${{secrets.GITHUB_TOKEN}}
+          publish_dir: playwright-report/
+          publish_branch: gh-pages
