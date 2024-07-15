@@ -57,7 +57,6 @@ jobs:
           pattern: report-*
           merge-multiple: true
           path: all-blob-reports
-      - run: ls -R my-artifact
       - name: Merge into HTML Report
         run: npx playwright merge-reports --reporter html ./all-blob-reports
       - name: Upload Playwright HTML report
