@@ -23,7 +23,7 @@ export default defineConfig({
   workers: process.env.CI ? 4 : 8, // Opt out of parallel tests on CI
   outputDir: 'output/', // Folder for test artifacts such as screenshots, videos, traces, etc
   reporter: !!process.env.CI // Reporter to use. See https://playwright.dev/docs/test-reporters
-    ? /*  CI   */[['list'], ['blob']]
+    ? /*  CI   */[['list'], ['blob'], ['junit', { outputFile: 'results.xml' }]]
     : /* Local */[['list'], ['html', { open: 'on-failure' }]],
 
   // Shared settings for all the projects
