@@ -6,7 +6,7 @@
     "report": "npx playwright show-report",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "typecheck": ""
+    "typecheck": "tsc -p tsconfig.json --strict"
   },
   "dependencies": {
     "dotenv": "^16.3.1",
@@ -17,6 +17,10 @@
     "@playwright/test": "1.45.1",
     "@types/node": "^20.11.0",
     "eslint": "^9.10.0",
-    "prettier": "3.2.1"
+    "prettier": "3.2.1",
+    "simple-git-hooks": "^2.11.1"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "npm run typecheck && npm run lint"
   }
 }

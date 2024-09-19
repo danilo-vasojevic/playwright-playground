@@ -1,4 +1,4 @@
-import { expect, test } from '../fixtures/fixtures'
+import { expect, test } from '../fixtures'
 
 test.describe('@homepage', () => {
   test('has title', async ({ po }) => {

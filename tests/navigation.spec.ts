@@ -1,4 +1,4 @@
-import { expect, test } from '../fixtures/fixtures'
+import { expect, test } from '../fixtures'
 import { BASE_URL } from '../playwright.config'
 
 test.describe('@navigation', () => {
