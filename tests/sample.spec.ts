@@ -1,4 +1,4 @@
-import { test, expect } from '../fixtures/fixtures'
+import { expect, test } from '../fixtures/fixtures'
 
 const startTime = Date.now()
 
@@ -14,7 +14,8 @@ test.describe('@samples', () => {
       info.skipBrowser('firefox')
       info.skipBrowser('webkit')
     })
-    if (!info.testInfo.retry) expect(true).toEqual(false)
+    if (!info.testInfo.retry)
+      expect(true).toEqual(false)
   })
 
   test('geolocation test example', async ({ po, info }) => {

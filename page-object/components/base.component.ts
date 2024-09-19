@@ -1,5 +1,5 @@
-import { Page, Locator } from '@playwright/test'
-import { LocatorOptions } from '../../utils/locator.types'
+import type { Locator, Page } from '@playwright/test'
+import type { LocatorOptions } from '../../utils/locator.types'
 
 export abstract class BaseComponent {
   protected page: Page
@@ -11,7 +11,8 @@ export abstract class BaseComponent {
     options?: LocatorOptions,
   ) {
     this.page = page
-    if (parent) this.component = parent.locator(baseLocator, options)
+    if (parent)
+      this.component = parent.locator(baseLocator, options)
     else this.component = page.locator(baseLocator, options)
   }
 }

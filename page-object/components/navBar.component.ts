@@ -1,5 +1,6 @@
+import type { Locator, Page } from '@playwright/test'
+import { expect, test } from '@playwright/test'
 import { BaseComponent } from './base.component'
-import { Locator, Page, expect, test } from '@playwright/test'
 
 export class NavBarComponent extends BaseComponent {
   constructor(page: Page, baseLocator: string) {
@@ -29,7 +30,6 @@ export class NavBarComponent extends BaseComponent {
       await expect(this.api).toBeVisible()
       await expect(this.langPicker).toBeVisible()
       await expect(this.community).toBeVisible()
-
       await expect(this.gitHubLink).toBeVisible()
       await expect(this.discordLink).toBeVisible()
       await expect(this.themeToggle).toBeVisible()

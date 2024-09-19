@@ -1,6 +1,6 @@
-import { Locator } from '@playwright/test'
+import type { Locator } from '@playwright/test'
 
-export type LocatorOptions = {
+export interface LocatorOptions {
   has?: Locator
   hasNot?: Locator
   hasNotText?: string | RegExp

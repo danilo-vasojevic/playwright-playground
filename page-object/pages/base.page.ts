@@ -1,4 +1,5 @@
-import { Page, expect, test } from '@playwright/test'
+import type { Page } from '@playwright/test'
+import { expect, test } from '@playwright/test'
 import { BASE_URL } from '../../playwright.config'
 
 export abstract class BasePage {

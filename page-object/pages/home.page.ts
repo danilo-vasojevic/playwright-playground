@@ -1,6 +1,7 @@
+import type { Page } from '@playwright/test'
+import { expect } from '@playwright/test'
 import { NavBarComponent } from '../components/navBar.component'
 import { BasePage } from './base.page'
-import { Page, expect } from '@playwright/test'
 
 export class HomePage extends BasePage {
   constructor(page: Page) {

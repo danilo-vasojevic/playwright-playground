@@ -1,4 +1,4 @@
-import { TestInfo } from '@playwright/test'
+import type { TestInfo } from '@playwright/test'
 
 export class ExtendedTestInfo {
   readonly testInfo: TestInfo
@@ -11,6 +11,7 @@ export class ExtendedTestInfo {
     this.testInfo.annotations.push({ type, description })
     return this
   }
+
   skip(reason: string): ExtendedTestInfo {
     this.testInfo.skip(true, reason)
     return this
@@ -21,7 +22,7 @@ export class ExtendedTestInfo {
     return this
   }
 
-  skipBrowser(browserName: 'chromium' | 'firefox' | 'webkit', reason?: string) {
+  skipBrowser(browserName: 'chromium' | 'firefox' | 'webkit') {
     this.skipIf(this.testInfo.project.name === browserName, `Won't run on ${browserName}`)
   }
 }

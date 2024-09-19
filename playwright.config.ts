@@ -22,7 +22,7 @@ export default defineConfig({
   retries: process.env.CI ? 1 : 1, // Retry on CI only
   workers: process.env.CI ? 4 : 8, // Opt out of parallel tests on CI
   outputDir: 'output/', // Folder for test artifacts such as screenshots, videos, traces, etc
-  reporter: !!process.env.CI // Reporter to use. See https://playwright.dev/docs/test-reporters
+  reporter: process.env.CI // Reporter to use. See https://playwright.dev/docs/test-reporters
     ? /*  CI   */[['list'], ['blob'], ['junit', { outputFile: 'results.xml' }]]
     : /* Local */[['list'], ['html', { open: 'on-failure' }]],
 
@@ -64,15 +64,16 @@ export default defineConfig({
         permissions: [...new Set([ // To avoid duplication
           ...DEFAULT_PERMISSIONS, // Combine global add new permissions
           ...['accessibility-events', 'clipboard-read', 'clipboard-write', 'geolocation'],
-        ])]
+        ])],
       },
     },
     { name: 'firefox', use: { ...devices['Desktop Firefox'] } },
     {
-      name: 'webkit', use: {
+      name: 'webkit',
+      use: {
         ...devices['Desktop Safari'],
-        permissions: ['geolocation'] // Override global permissions
-      }
+        permissions: ['geolocation'], // Override global permissions
+      },
     },
   ],
 })
