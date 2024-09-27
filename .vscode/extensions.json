@@ -5,6 +5,7 @@
         "ms-playwright.playwright",
 		"dbaeumer.vscode-eslint",
         "github.vscode-github-actions",
-        "danilovasojevic.jira-ticket-linker-for-test"
+        "danilovasojevic.jira-ticket-linker-for-test",
+		"vscode-icons-team.vscode-icons"
 	]
 }

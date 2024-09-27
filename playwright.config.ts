@@ -7,14 +7,12 @@ process.env.ENV = process.env.ENV ? process.env.ENV : 'default' // Which .env fi
 dotenv.config({ path: `config/${process.env.ENV}.env` }) // Read .env
 export const BASE_URL = process.env.BASE_URL
 const DEFAULT_PERMISSIONS = process.env.DEFAULT_PERMISSIONS!.split(',')
-const seconds = 1000
-const percent = 0.01
 
 // Configuration for entire Playwright project
 // See https://playwright.dev/docs/test-configuration
 export default defineConfig({
   maxFailures: 10, // Maximum number of test failures before stopping execution
-  timeout: 30 * seconds, // Timeout for each test in milliseconds
+  timeout: 30000, // Timeout for each test in milliseconds
   testDir: './tests', // Directory where Playwright looks for tests
   snapshotPathTemplate: 'data/{testFileName}/{arg}{ext}', // Where to generate / look for snapshots
   fullyParallel: true, // Run tests in files in parallel
@@ -24,17 +22,18 @@ export default defineConfig({
   outputDir: 'output/', // Folder for test artifacts such as screenshots, videos, traces, etc
   reporter: process.env.CI // Reporter to use. See https://playwright.dev/docs/test-reporters
     ? /*  CI   */[['list'], ['blob'], ['junit', { outputFile: 'results.xml' }]]
-    : /* Local */[['list'], ['html', { open: 'on-failure' }]],
+    : /* Local */[['list'], ['html', { open: 'on-failure', outputFolder: 'output/playwright-report/' }]],
 
   // Shared settings for all the projects
   // See https://playwright.dev/docs/api/class-testoptions
   use: {
     acceptDownloads: true, // Accepts all downloads
-    actionTimeout: 5 * seconds, // No action can take longer than 5 seconds
-    baseURL: `${BASE_URL}`, // Base URL to use in actions like `await page.goto('/')`
+    actionTimeout: 5000, // No action can take longer than 5 seconds
+    baseURL: BASE_URL, // Base URL to use in actions like `await page.goto('/')`
     geolocation: { longitude: 19.997393, latitude: 43.275428 },
     permissions: DEFAULT_PERMISSIONS, // Used in all projects
     headless: true, // Run tests in headless mode
+    screenshot: 'only-on-failure', // Capture screenshots on test failure
     trace: 'on-first-retry', // Collect trace when retrying the failed test
     video: 'on-first-retry', // Collect video when retrying the failed test
     viewport: { width: 1920, height: 1080 }, // Viewport resolution to use
@@ -43,13 +42,13 @@ export default defineConfig({
   // Default config for assertions
   // See https://playwright.dev/docs/test-configuration#expect-options
   expect: {
-    timeout: 5 * seconds, // Maximum time expect() should wait for the condition to be met
+    timeout: 5000, // Maximum time expect() should wait for the condition to be met
     toHaveScreenshot: {
       animations: 'disabled', // Disables animations when comparing screenshots
       caret: 'hide', // Hides red text caret when comparing screenshots
       scale: 'css', //
-      threshold: 20 * percent, // How different colors can be (comparing in YIQ color space)
-      maxDiffPixelRatio: 1 * percent,
+      threshold: 0.2, // How different colors can be (comparing in YIQ color space)
+      maxDiffPixelRatio: 0.01,
       maxDiffPixels: 1000,
     },
   },

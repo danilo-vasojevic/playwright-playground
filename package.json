@@ -8,16 +8,12 @@
     "lint:fix": "eslint . --fix",
     "typecheck": "tsc -p tsconfig.json --strict"
   },
-  "dependencies": {
-    "dotenv": "^16.3.1",
-    "playwright": "^1.45.1"
-  },
   "devDependencies": {
     "@antfu/eslint-config": "^3.6.2",
     "@playwright/test": "1.45.1",
     "@types/node": "^20.11.0",
+    "dotenv": "^16.3.1",
     "eslint": "^9.10.0",
-    "prettier": "3.2.1",
     "simple-git-hooks": "^2.11.1"
   },
   "simple-git-hooks": {
