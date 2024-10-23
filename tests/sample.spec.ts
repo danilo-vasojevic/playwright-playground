@@ -1,4 +1,4 @@
-import { expect, test } from '../fixtures'
+import { expect, test } from '../utils/extended-test-fixtures'
 
 const startTime = Date.now()
 

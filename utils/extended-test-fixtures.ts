@@ -1,7 +1,7 @@
 import type { Page } from '@playwright/test'
 import { test as pwTest } from '@playwright/test'
-import { PageObject } from './page-object/page-object'
-import { ExtendedTestInfo } from './utils/extended-test-info'
+import { PageObject } from '../page-object/page-object'
+import { ExtendedTestInfo } from './extended-test-info'
 
 export { expect } from '@playwright/test'
 export const test = pwTest.extend<{

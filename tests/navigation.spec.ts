@@ -1,5 +1,5 @@
-import { expect, test } from '../fixtures'
 import { BASE_URL } from '../playwright.config'
+import { expect, test } from '../utils/extended-test-fixtures'
 
 test.describe('@navigation', () => {
   test('logo looks okay', async ({ po }) => {
