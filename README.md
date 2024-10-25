@@ -6,4 +6,4 @@
 
 ## Reporting
 After each pipeline, Plawright HTML report will be published to GitHub Pages.
-[Latest HTML Report](https://danilo-vasojevic.github.io/playwright-template/)
+[Latest HTML Report](https://danilo-vasojevic.github.io/playwright-playground/)
