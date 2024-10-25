@@ -1,0 +1,36 @@
+name: Publish to GitHub Pages
+on:
+  workflow_call:
+    inputs:
+      artifact_name:
+        description: Name of the artifact to download and publish
+        required: true
+        type: string
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ inputs.artifact_name }}
+          path: report
+
+      - name: Configure Git
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
+      - name: Push report to GitHub Pages
+        run: |
+          git checkout --orphan gh-pages
+          git rm -rf .
+          mv report/* ./
+          git add .
+          git commit -m "Publishing report to GitHub Pages"
+          git push --force origin gh-pages

@@ -37,7 +37,7 @@ jobs:
   merge:
     if: always()
     needs: [test]
-    name: Merge and publish reports
+    name: Merge reports
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
