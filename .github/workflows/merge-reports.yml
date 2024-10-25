@@ -1,0 +1,52 @@
+name: Merge Reports
+
+on:
+  workflow_call:
+    inputs:
+      artifact-pattern:
+        description: Pattern for artifacts to download and merge
+        type: string
+        required: true
+        default: report-*
+      merged-report-name:
+        description: Name of the merged report artifact to upload
+        type: string
+        required: true
+        default: playwright-report
+    secrets: {}
+
+jobs:
+  merge:
+    name: Merge sharded reports to one
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Download blobs
+        uses: actions/download-artifact@v4
+        id: download
+        with:
+          pattern: ${{ inputs.artifact-pattern }}
+          merge-multiple: true
+          path: all-blob-reports
+
+      - name: Merge into HTML Report
+        run: npx playwright merge-reports --reporter html ./all-blob-reports
+
+      - name: Upload Playwright HTML report
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.merged-report-name }}
+          path: playwright-report
+          retention-days: 1
