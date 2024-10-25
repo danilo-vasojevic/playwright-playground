@@ -74,7 +74,7 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
         with:
-          fetch-depth: 1 # Ensures a clean repo without previous builds
+          fetch-depth: 1
 
       - name: Download artifacts
         uses: actions/download-artifact@v4
@@ -101,12 +101,3 @@ jobs:
           git commit -m "Publishing Playwright report to GitHub Pages"
           # Force push to the 'gh-pages' branch
           git push --force origin gh-pages
-      - name: Download artifacts
-        uses: actions/download-artifact@v4
-      - name: Publish to GH Pages
-        uses: peaceiris/actions-gh-pages@v4
-        if: always()
-        with:
-          github_token: ${{secrets.GITHUB_TOKEN}}
-          publish_dir: playwright-report/
-          publish_branch: gh-pages
