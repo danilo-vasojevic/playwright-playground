@@ -1,0 +1,59 @@
+variables:
+  IMAGE: mcr.microsoft.com/playwright:v1.45.1-jammy
+
+stages:
+  - test # Run all tests, generate and publish blob reports
+  - merge # Merge all generated reports into single HTML report and publish it
+  - publish # Publish the merged report to GitLab Pages
+
+test:
+  stage: test
+  image: $IMAGE
+  parallel:
+    matrix:
+      - PROJECT: [chromium]
+        SHARD_INDEX: [1, 2, 3]
+        SHARD_TOTAL: 3
+  script:
+    - npm ci
+    - npx playwright test --project=$PROJECT --shard=$SHARD_INDEX/$SHARD_TOTAL
+  artifacts:
+    reports:
+      junit: results.xml
+    name: report-$SHARD_INDEX
+    paths:
+      - ./blob-report/*
+    when: always
+    expire_in: 1 hour
+
+merge:
+  stage: merge
+  needs: [test]
+  image: $IMAGE
+  script:
+    - npm ci
+    - npx playwright merge-reports --reporter html ./blob-report
+    - mv ./playwright-report ./public
+  dependencies:
+    - test
+  artifacts:
+    paths:
+      - ./public
+    when: always
+    expire_in: 2 days
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: never
+    - when: always
+
+pages:
+  stage: publish
+  needs: [merge]
+  image: $IMAGE
+  script:
+    - echo "Publishing Playwright report to GitLab Pages"
+  artifacts:
+    paths:
+      - public
+  only:
+    - main
