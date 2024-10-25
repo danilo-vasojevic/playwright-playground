@@ -37,14 +37,14 @@ jobs:
   merge:
     if: always()
     needs: test
-    uses: ./.github/workflows/merge-reports.yml
+    uses: ./.github/workflows/base/merge-reports.yml
     with:
       artifact-pattern: report-*
       merged-report-name: playwright-report
   publish:
     if: always()
     needs: merge
-    uses: ./.github/workflows/publish.yml
+    uses: ./.github/workflows/base/publish.yml
     with:
       report-name: playwright-report
       branch: gh-pages

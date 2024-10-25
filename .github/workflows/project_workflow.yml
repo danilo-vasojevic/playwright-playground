@@ -35,65 +35,15 @@ jobs:
           retention-days: 1
   merge:
     if: always()
-    needs: [test]
-    name: Merge reports
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-      - name: Setup node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 18
-          cache: npm
-          cache-dependency-path: package-lock.json
-      - name: Install dependencies
-        run: npm ci
-      - name: Download blobs
-        uses: actions/download-artifact@v4
-        id: download
-        with:
-          pattern: report-*
-          merge-multiple: true
-          path: all-blob-reports
-      - name: Merge into HTML Report
-        run: npx playwright merge-reports --reporter html ./all-blob-reports
-      - name: Upload Playwright HTML report
-        uses: actions/upload-artifact@v4
-        with:
-          name: playwright-report
-          path: playwright-report
-          retention-days: 1
+    needs: test
+    uses: ./.github/workflows/base/merge-reports.yml
+    with:
+      artifact-pattern: report-*
+      merged-report-name: playwright-report
   publish:
     if: always()
-    name: Push report to GH Pages
-    needs: [merge]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 1
-      - name: Download artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: playwright-report
-          path: playwright-report
-      - name: Configure Git
-        run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-      - name: Push report to gh-pages
-        run: |
-          # Switch to a new 'gh-pages' branch
-          git checkout --orphan gh-pages
-          # Remove all files from the old working tree
-          git rm -rf .
-          # Move the Playwright report files to the root of the repo
-          mv playwright-report/* ./
-          # Add all files for the commit
-          git add .
-          # Commit the changes
-          git commit -m "Publishing Playwright report to GitHub Pages"
-          # Force push to the 'gh-pages' branch
-          git push --force origin gh-pages
+    needs: merge
+    uses: ./.github/workflows/base/publish.yml
+    with:
+      report-name: playwright-report
+      branch: gh-pages

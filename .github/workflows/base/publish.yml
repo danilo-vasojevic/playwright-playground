@@ -1,5 +1,4 @@
 name: Publish Playwright Report
-
 on:
   workflow_call:
     inputs:
@@ -14,7 +13,6 @@ on:
         required: true
         default: gh-pages
     secrets: {}
-
 jobs:
   publish:
     name: GitHub Pages
@@ -24,18 +22,15 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 1
-
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
           name: ${{ inputs.report-name }}
           path: ${{ inputs.report-name }}
-
       - name: Configure Git
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-
       - name: Push report to GitHub Pages
         run: |
           git checkout --orphan ${{ inputs.branch }}
