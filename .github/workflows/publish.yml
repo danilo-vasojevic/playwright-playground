@@ -1,11 +1,20 @@
-name: Publish to GitHub Pages
+name: Publish Playwright Report
+
 on:
   workflow_call:
     inputs:
-      artifact_name:
-        description: Name of the artifact to download and publish
-        required: true
+      report-name:
+        description: The name of the artifact to download
         type: string
+        required: true
+        default: playwright-report
+      branch:
+        description: The branch to push the report to
+        type: string
+        required: true
+        default: gh-pages
+    secrets: {}
+
 jobs:
   publish:
     runs-on: ubuntu-latest
@@ -18,8 +27,8 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
-          name: ${{ inputs.artifact_name }}
-          path: report
+          name: ${{ inputs.report-name }}
+          path: ${{ inputs.report-name }}
 
       - name: Configure Git
         run: |
@@ -28,9 +37,9 @@ jobs:
 
       - name: Push report to GitHub Pages
         run: |
-          git checkout --orphan gh-pages
+          git checkout --orphan ${{ inputs.branch }}
           git rm -rf .
-          mv report/* ./
+          mv ${{ inputs.report-name }}/* ./
           git add .
-          git commit -m "Publishing report to GitHub Pages"
-          git push --force origin gh-pages
+          git commit -m "Publishing Playwright report to GitHub Pages"
+          git push --force origin ${{ inputs.branch }}

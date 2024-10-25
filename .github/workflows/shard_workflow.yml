@@ -68,36 +68,8 @@ jobs:
   publish:
     if: always()
     name: Push report to GH Pages
-    needs: [merge]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 1
-
-      - name: Download artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: playwright-report
-          path: playwright-report
-
-      - name: Configure Git
-        run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-
-      - name: Push report to gh-pages
-        run: |
-          # Switch to a new 'gh-pages' branch
-          git checkout --orphan gh-pages
-          # Remove all files from the old working tree
-          git rm -rf .
-          # Move the Playwright report files to the root of the repo
-          mv playwright-report/* ./
-          # Add all files for the commit
-          git add .
-          # Commit the changes
-          git commit -m "Publishing Playwright report to GitHub Pages"
-          # Force push to the 'gh-pages' branch
-          git push --force origin gh-pages
+    needs: merge
+    uses: ./.github/workflows/publish.yml
+    with:
+      report-name: playwright-report
+      branch: gh-pages
