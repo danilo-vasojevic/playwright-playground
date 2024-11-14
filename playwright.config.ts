@@ -22,7 +22,7 @@ export default defineConfig({
   outputDir: 'output/', // Folder for test artifacts such as screenshots, videos, traces, etc
   reporter: process.env.CI // Reporter to use. See https://playwright.dev/docs/test-reporters
     ? /*  CI   */[['list'], ['blob'], ['junit', { outputFile: 'results.xml' }]]
-    : /* Local */[['list'], ['html', { open: 'on-failure', outputFolder: 'output/playwright-report/' }]],
+    : /* Local */[['list'], ['html', { open: 'on-failure' }]],
 
   // Shared settings for all the projects
   // See https://playwright.dev/docs/api/class-testoptions

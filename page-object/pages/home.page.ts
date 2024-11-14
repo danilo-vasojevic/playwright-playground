@@ -1,5 +1,7 @@
 import type { Page } from '@playwright/test'
 import { expect } from '@playwright/test'
+import { BASE_URL } from '../../playwright.config'
+import { Step } from '../../utils/step-decorator'
 import { NavBarComponent } from '../components/navBar.component'
 import { BasePage } from './base.page'
 
@@ -16,9 +18,17 @@ export class HomePage extends BasePage {
   paragraphTitles = this.page.locator('//h3[text()]')
 
   // Actions
+  @Step('Verify paragraph titles: {1}')
   async verifyParagraphTitles(opts: { titles: string[] }) {
     for (const title of opts.titles) {
       await expect(this.paragraphTitles.getByText(title)).toBeVisible()
     }
+  }
+
+  @Step('Switch language to: {1}')
+  async switchLanguageTo(item: { lang: string, url: string }) {
+    await this.navBar.langPicker.hover()
+    await this.navBar.getDropdownItem(item.lang).click()
+    await expect(this.page).toHaveURL(new RegExp(`.*${BASE_URL}/${item.url}.*`))
   }
 }

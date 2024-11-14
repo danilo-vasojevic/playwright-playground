@@ -1,5 +1,6 @@
 import type { Locator, Page } from '@playwright/test'
-import { expect, test } from '@playwright/test'
+import { expect } from '@playwright/test'
+import { Step } from '../../utils/step-decorator'
 import { BaseComponent } from './base.component'
 
 export class NavBarComponent extends BaseComponent {
@@ -24,17 +25,16 @@ export class NavBarComponent extends BaseComponent {
   search = this.component.locator('button[aria-label="Search"]')
 
   // Actions
-  async verifyNavItems() {
-    await test.step('Verify naviation items are visible', async () => {
-      await expect(this.docs).toBeVisible()
-      await expect(this.api).toBeVisible()
-      await expect(this.langPicker).toBeVisible()
-      await expect(this.community).toBeVisible()
-      await expect(this.gitHubLink).toBeVisible()
-      await expect(this.discordLink).toBeVisible()
-      await expect(this.themeToggle).toBeVisible()
-      await expect(this.search).toBeVisible()
-    })
+  @Step()
+  async verifyNavigationItemsAreVisible() {
+    await expect(this.docs).toBeVisible()
+    await expect(this.api).toBeVisible()
+    await expect(this.langPicker).toBeVisible()
+    await expect(this.community).toBeVisible()
+    await expect(this.gitHubLink).toBeVisible()
+    await expect(this.discordLink).toBeVisible()
+    await expect(this.themeToggle).toBeVisible()
+    await expect(this.search).toBeVisible()
   }
 
   getDropdownItem(item: string): Locator {

@@ -1,4 +1,3 @@
-import { BASE_URL } from '../playwright.config'
 import { expect, test } from '../utils/extended-test-fixtures'
 
 test.describe('@navigation', () => {
@@ -9,7 +8,7 @@ test.describe('@navigation', () => {
 
   test('nav items are visible', async ({ po }) => {
     await po.home.navigate()
-    await po.home.navBar.verifyNavItems()
+    await po.home.navBar.verifyNavigationItemsAreVisible()
   })
 
   test('items under Node.js are okay', async ({ po }) => {
@@ -21,11 +20,7 @@ test.describe('@navigation', () => {
     ]
     await po.home.navigate()
     for (const item of items) {
-      await test.step(`Switch language to ${item.lang}`, async () => {
-        await po.home.navBar.langPicker.hover()
-        await po.home.navBar.getDropdownItem(item.lang).click()
-        await expect(po.page).toHaveURL(new RegExp(`.*${BASE_URL}/${item.url}.*`))
-      })
+      await po.home.switchLanguageTo(item)
     }
   })
 })
