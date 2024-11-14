@@ -18,14 +18,14 @@ export class HomePage extends BasePage {
   paragraphTitles = this.page.locator('//h3[text()]')
 
   // Actions
-  @Step('Verify paragraph titles: {0.titles}')
+  @Step('Verify paragraph titles: {opts.titles}')
   async verifyParagraphTitles(opts: { titles: string[] }) {
     for (const title of opts.titles) {
       await expect(this.paragraphTitles.getByText(title)).toBeVisible()
     }
   }
 
-  @Step('Switch language to: {0.lang} with partial url {0.url}')
+  @Step('Switch language to: {item.lang} with partial url {item.url}')
   async switchLanguageTo(item: { lang: string, url: string }) {
     await this.navBar.langPicker.hover()
     await this.navBar.dropdownItem(item.lang).click()

@@ -1,12 +1,12 @@
+/* eslint-disable ts/no-unsafe-function-type */
 import { test } from './extended-test-fixtures'
 
 export function Step(stepName?: string) {
-  // eslint-disable-next-line ts/no-unsafe-function-type
   return function decorator(target: Function, context: ClassMethodDecoratorContext) {
     return async function replacementMethod(this: any, ...args: any) {
       const name = stepName
-        ? replacePlaceholders(stepName, args) // Replaces placeholders in stepName
-        : parseFunctionName(context.name as string) // Turns function name into test step
+        ? replacePlaceholders(stepName, mapPositionalArgs(target, args))
+        : parseFunctionName(context.name as string)
 
       return test.step(name, async () => {
         return await target.call(this, ...args)
@@ -15,19 +15,34 @@ export function Step(stepName?: string) {
   }
 }
 
+function mapPositionalArgs(func: Function, args: any[]): Record<string, any> {
+  const paramNames = getParamNames(func)
+  const argsObject: Record<string, any> = {}
+  paramNames.forEach((name, index) => {
+    argsObject[name] = args[index]
+  })
+  return argsObject
+}
+
+function getParamNames(func: Function): string[] {
+  const funcStr = func.toString()
+  const paramList = funcStr.slice(funcStr.indexOf('(') + 1, funcStr.indexOf(')'))
+  return paramList
+    .split(',')
+    .map(param => param.trim())
+    .filter(param => param)
+}
+
 function parseFunctionName(fnName: string): string {
   return fnName
     .replace(/([a-z])([A-Z])/g, '$1 $2')
     .replace(/^./, str => str.toUpperCase())
 }
 
-function replacePlaceholders(template: string, args: any[]): string {
-  return template.replace(/\{(\d+)(\.[\w.]+)?\}/g, (match, indexStr, propertyPath) => {
-    const argIndex = Number.parseInt(indexStr, 10) // Get the argument index
-    const properties = propertyPath ? propertyPath.slice(1).split('.') : [] // Remove leading dot and split path
-
-    // Get the value by traversing the property path within the specified argument
-    const value = getPropertyValue(args[argIndex], properties)
+function replacePlaceholders(template: string, argsObject: Record<string, any>): string {
+  return template.replace(/\{(\w+(\.\w+)*)\}/g, (match, path) => {
+    const properties = path.split('.')
+    const value = getPropertyValue(argsObject, properties)
     return value !== undefined ? JSON.stringify(value) : match
   })
 }
