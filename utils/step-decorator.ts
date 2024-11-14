@@ -5,8 +5,8 @@ export function Step(stepName?: string) {
   return function decorator(target: Function, context: ClassMethodDecoratorContext) {
     return async function replacementMethod(this: any, ...args: any) {
       const name = stepName
-        ? replacePlaceholders(stepName, args)
-        : parseFunctionName(context.name as string)
+        ? replacePlaceholders(stepName, args) // Replaces placeholders in stepName
+        : parseFunctionName(context.name as string) // Turns function name into test step
 
       return test.step(name, async () => {
         return await target.call(this, ...args)
@@ -22,8 +22,16 @@ function parseFunctionName(fnName: string): string {
 }
 
 function replacePlaceholders(template: string, args: any[]): string {
-  return template.replace(/\{(\d+)\}/g, (match, index) => {
-    const argIndex = Number.parseInt(index, 10) - 1
-    return args[argIndex] !== undefined ? JSON.stringify(args[argIndex]) : match
+  return template.replace(/\{(\d+)(\.[\w.]+)?\}/g, (match, indexStr, propertyPath) => {
+    const argIndex = Number.parseInt(indexStr, 10) // Get the argument index
+    const properties = propertyPath ? propertyPath.slice(1).split('.') : [] // Remove leading dot and split path
+
+    // Get the value by traversing the property path within the specified argument
+    const value = getPropertyValue(args[argIndex], properties)
+    return value !== undefined ? JSON.stringify(value) : match
   })
+}
+
+function getPropertyValue(obj: any, propertyPath: string[]): any {
+  return propertyPath.reduce((acc, key) => (acc && acc[key] !== undefined ? acc[key] : undefined), obj)
 }

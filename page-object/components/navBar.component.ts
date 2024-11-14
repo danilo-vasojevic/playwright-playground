@@ -1,4 +1,4 @@
-import type { Locator, Page } from '@playwright/test'
+import type { Page } from '@playwright/test'
 import { expect } from '@playwright/test'
 import { Step } from '../../utils/step-decorator'
 import { BaseComponent } from './base.component'
@@ -23,10 +23,10 @@ export class NavBarComponent extends BaseComponent {
   discordLink = this.component.locator('a.header-discord-link')
   themeToggle = this.component.locator('//div[contains(@class, "colorModeToggle")]')
   search = this.component.locator('button[aria-label="Search"]')
+  dropdownItem = (item: string) => this.dropdownItems.getByText(item)
 
   // Actions
-  @Step()
-  async verifyNavigationItemsAreVisible() {
+  @Step() async verifyNavigationItemsAreVisible() {
     await expect(this.docs).toBeVisible()
     await expect(this.api).toBeVisible()
     await expect(this.langPicker).toBeVisible()
@@ -35,9 +35,5 @@ export class NavBarComponent extends BaseComponent {
     await expect(this.discordLink).toBeVisible()
     await expect(this.themeToggle).toBeVisible()
     await expect(this.search).toBeVisible()
-  }
-
-  getDropdownItem(item: string): Locator {
-    return this.dropdownItems.getByText(item)
   }
 }

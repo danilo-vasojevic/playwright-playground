@@ -9,7 +9,7 @@ test.describe('@samples', () => {
   })
 
   test('flaky test example', async ({ po, info }) => {
-    await po.home.navigate()
+    await po.home.navigateToPage()
     await test.step('Skip test if browser is Firefox or WebKit', async () => {
       info.skipBrowser('firefox')
       info.skipBrowser('webkit')

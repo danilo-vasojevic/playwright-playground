@@ -2,12 +2,12 @@ import { expect, test } from '../utils/extended-test-fixtures'
 
 test.describe('@navigation', () => {
   test('logo looks okay', async ({ po }) => {
-    await po.home.navigate()
+    await po.home.navigateToPage()
     await expect(po.home.navBar.logo).toHaveScreenshot('logo.png')
   })
 
   test('nav items are visible', async ({ po }) => {
-    await po.home.navigate()
+    await po.home.navigateToPage()
     await po.home.navBar.verifyNavigationItemsAreVisible()
   })
 
@@ -18,7 +18,7 @@ test.describe('@navigation', () => {
       { lang: 'Java', url: 'java' },
       { lang: '.NET', url: 'dotnet' },
     ]
-    await po.home.navigate()
+    await po.home.navigateToPage()
     for (const item of items) {
       await po.home.switchLanguageTo(item)
     }
