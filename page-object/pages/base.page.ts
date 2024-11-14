@@ -23,7 +23,7 @@ export abstract class BasePage {
   }
 
   @Step() async verifyUrl() {
-    test.step(`Verify page URL is: ${this.url}`, async () => {
+    await test.step(`Verify page URL is: ${this.url}`, async () => {
       await expect(this.page).toHaveURL(this.url)
     })
   }
