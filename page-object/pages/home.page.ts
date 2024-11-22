@@ -18,11 +18,16 @@ export class HomePage extends BasePage {
   paragraphTitles = this.page.locator('//h3[text()]')
 
   // Actions
-  @Step('Verify paragraph titles: {opts.titles}')
+  @Step('Verify paragraph titles are visible')
   async verifyParagraphTitles(opts: { titles: string[] }) {
     for (const title of opts.titles) {
-      await expect(this.paragraphTitles.getByText(title)).toBeVisible()
+      await this.verifyParagrapgIsVisible(title)
     }
+  }
+
+  @Step('Verify paragraph is visible: {title}')
+  async verifyParagrapgIsVisible(title: string) {
+    await expect(this.paragraphTitles.getByText(title)).toBeVisible()
   }
 
   @Step('Switch language to: {item.lang} with partial url {item.url}')
