@@ -39,13 +39,15 @@ export default defineConfig({
     viewport: { width: 1920, height: 1080 }, // Viewport resolution to use
   },
 
-  // webServer: {
-  //   command: 'python services/iconLocatorService.py',
-  //   url: 'http://127.0.0.1:5000',
-  //   reuseExistingServer: !process.env.CI,
-  //   stderr: 'ignore',
-  //   stdout: 'ignore',
-  // },
+  webServer: !process.env.CI // Webserver will be started by CI on CI
+    ? {
+        command: 'python services/iconLocatorService.py',
+        url: 'http://127.0.0.1:5000',
+        reuseExistingServer: !process.env.CI,
+        stderr: 'ignore',
+        stdout: 'ignore',
+      }
+    : undefined,
 
   // Default config for assertions
   // See https://playwright.dev/docs/test-configuration#expect-options
