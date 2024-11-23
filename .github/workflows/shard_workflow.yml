@@ -31,6 +31,13 @@ jobs:
           python3 -m venv .venv
           source .venv/bin/activate
           pip install -r services/requirements.txt
+      - name: Start Flask server
+        shell: bash # Use bash shell
+        run: |
+          source .venv/bin/activate
+          python services/iconLocatorService.py &
+        env:
+          FLASK_ENV: development
       - name: Install NPM dependencies
         run: npm ci
       - name: Run Playwright tests
