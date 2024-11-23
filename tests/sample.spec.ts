@@ -35,5 +35,8 @@ test.describe('@samples', () => {
     await po.home.clickImage('GetStarted')
     await expect(po.page).toHaveURL(/intro/)
     await expect(po.page.locator('h1')).toHaveText('Installation')
+    await po.home.clickImage('Logo')
+    await po.home.verifyUrl()
+    await expect(po.home.heroTitle).toContainText('reliable end-to-end testing')
   })
 })

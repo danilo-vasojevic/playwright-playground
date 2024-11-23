@@ -71,6 +71,6 @@ export abstract class BasePage {
   async clickImage(iconName: string) {
     const position = await this.locateElementViaImage(iconName)
     await this.page.click('body', { position })
-    await this.drawCircle(position)
+    // await this.drawCircle(position) // Used to show where click will be dropped, debugging mostly
   }
 }
