@@ -67,6 +67,30 @@ export abstract class BasePage {
     return position
   }
 
+  @Step('Locate element coordinates: "{iconName}"')
+  async locateFastElementViaImage(iconName: string): Promise<{ x: number, y: number }> {
+    const buffer = await this.page.screenshot({ path: 'output/screenshot.png' })
+    const size = this.page.viewportSize()
+    const api = await request.newContext()
+    const response: any = await api.post('http://127.0.0.1:5000/locate-fast', {
+      multipart: {
+        file: {
+          name: 'screenshot.png',
+          mimeType: 'image/png',
+          buffer,
+        },
+        iconName,
+        threshold: 0.5,
+      },
+    })
+    const responseJson = await response.json()
+    const position = {
+      x: Math.round(responseJson.x * size!.width),
+      y: Math.round(responseJson.y * size!.height),
+    }
+    return position
+  }
+
   @Step('Click element located by image: {iconName}')
   async clickImage(iconName: string) {
     const position = await this.locateElementViaImage(iconName)
