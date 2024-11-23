@@ -44,7 +44,7 @@ export abstract class BasePage {
     }, position)
   }
 
-  @Step('Locate element coordinates: "{iconName}"')
+  @Step('Locate element coordinates: {iconName}')
   async locateElementViaImage(iconName: string): Promise<{ x: number, y: number }> {
     const buffer = await this.page.screenshot({ path: 'output/screenshot.png' })
     const size = this.page.viewportSize()
@@ -67,7 +67,7 @@ export abstract class BasePage {
     return position
   }
 
-  @Step('Locate element coordinates: "{iconName}"')
+  @Step('Fast locate element coordinates: "{iconName}"')
   async locateFastElementViaImage(iconName: string): Promise<{ x: number, y: number }> {
     const buffer = await this.page.screenshot({ path: 'output/screenshot.png' })
     const size = this.page.viewportSize()

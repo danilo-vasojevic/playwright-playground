@@ -20,6 +20,23 @@ jobs:
           node-version: 20
           cache: npm
           cache-dependency-path: package-lock.json
+      - name: Install system dependencies
+        run: |
+          apt-get update
+          apt-get install -y python3 python3-pip python3-venv
+      - name: Setup Python environment and install dependencies
+        shell: bash
+        run: |
+          python3 -m venv .venv
+          source .venv/bin/activate
+          pip install -r services/requirements.txt
+      - name: Start Flask server
+        shell: bash # Use bash shell
+        run: |
+          source .venv/bin/activate
+          python services/iconLocatorService.py &
+        env:
+          FLASK_ENV: development
       - name: Install NPM dependencies
         run: npm ci
       - name: Run UI tests for ${{matrix.feature}}
