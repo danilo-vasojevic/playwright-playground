@@ -1,5 +1,5 @@
 variables:
-  IMAGE: mcr.microsoft.com/playwright:v1.45.1-jammy
+  IMAGE: mcr.microsoft.com/playwright:v1.49.0-noble
 
 stages:
   - test # Run all tests, generate and publish blob reports
