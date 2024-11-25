@@ -14,6 +14,7 @@ export class HomePage extends BasePage {
   navBar = new NavBarComponent(this.page, 'nav[aria-label="Main"]')
 
   // Locators
+  heroTitle = this.page.locator('h1.hero__title')
   getStarted = this.page.getByRole('link', { name: 'Get started' })
   paragraphTitles = this.page.locator('//h3[text()]')
 

@@ -39,6 +39,16 @@ export default defineConfig({
     viewport: { width: 1920, height: 1080 }, // Viewport resolution to use
   },
 
+  webServer: !process.env.CI // Webserver will be started by CI on CI
+    ? {
+        command: 'python services/iconLocatorService.py',
+        url: 'http://127.0.0.1:5000',
+        reuseExistingServer: !process.env.CI,
+        stderr: 'ignore',
+        stdout: 'ignore',
+      }
+    : undefined,
+
   // Default config for assertions
   // See https://playwright.dev/docs/test-configuration#expect-options
   expect: {
@@ -62,7 +72,7 @@ export default defineConfig({
         ...devices['Desktop Chrome'],
         permissions: [...new Set([ // To avoid duplication
           ...DEFAULT_PERMISSIONS, // Combine global add new permissions
-          ...['accessibility-events', 'clipboard-read', 'clipboard-write', 'geolocation'],
+          ...['clipboard-read', 'clipboard-write', 'geolocation'],
         ])],
       },
     },

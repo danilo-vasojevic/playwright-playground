@@ -29,11 +29,13 @@ test.describe('@samples', () => {
   })
 
   test('Click on button located by image', async ({ po }) => {
-    test.skip(!!process.env.CI, 'This will not work in CI until I figure out how to install python etc.')
     await po.home.navigateToPage()
     await po.home.verifyUrl()
     await po.home.clickImage('GetStarted')
     await expect(po.page).toHaveURL(/intro/)
     await expect(po.page.locator('h1')).toHaveText('Installation')
+    await po.home.clickImage('Logo')
+    await po.home.verifyUrl()
+    await expect(po.home.heroTitle).toContainText('reliable end-to-end testing')
   })
 })
