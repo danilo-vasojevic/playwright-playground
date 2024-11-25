@@ -72,7 +72,7 @@ export default defineConfig({
         ...devices['Desktop Chrome'],
         permissions: [...new Set([ // To avoid duplication
           ...DEFAULT_PERMISSIONS, // Combine global add new permissions
-          ...['accessibility-events', 'clipboard-read', 'clipboard-write', 'geolocation'],
+          ...['clipboard-read', 'clipboard-write', 'geolocation'],
         ])],
       },
     },
