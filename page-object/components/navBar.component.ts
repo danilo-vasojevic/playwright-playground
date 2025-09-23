@@ -22,7 +22,7 @@ export class NavBarComponent extends BaseComponent {
   gitHubLink = this.component.locator('a.header-github-link')
   discordLink = this.component.locator('a.header-discord-link')
   themeToggle = this.component.locator('//div[contains(@class, "colorModeToggle")]')
-  search = this.component.locator('button[aria-label="Search"]')
+  search = this.component.locator('.DocSearch')
   dropdownItem = (item: string) => this.dropdownItems.getByText(item)
 
   // Actions
