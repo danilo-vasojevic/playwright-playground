@@ -1,0 +1,54 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: homepage.spec.ts >> @homepage >> get started link works
+- Location: tests/homepage.spec.ts:9:7
+
+# Error details
+
+```
+TimeoutError: locator.click: Timeout 5000ms exceeded.
+Call log:
+  - waiting for getByRole('link', { name: 'Get started' })
+    - locator resolved to <a href="/docs/intro" class="getStarted_Sjon">Get started</a>
+  - attempting click action
+    - waiting for element to be visible, enabled and stable
+
+```
+
+# Test source
+
+```ts
+  1  | import { expect, test } from '../utils/extended-test-fixtures'
+  2  | 
+  3  | test.describe('@homepage', () => {
+  4  |   test('has title', async ({ po }) => {
+  5  |     await po.home.navigateToPage()
+  6  |     await po.home.verifyUrl()
+  7  |   })
+  8  | 
+  9  |   test('get started link works', async ({ po }) => {
+  10 |     await po.home.navigateToPage()
+> 11 |     await po.home.getStarted.click()
+     |                              ^ TimeoutError: locator.click: Timeout 5000ms exceeded.
+  12 |     await expect(po.page).toHaveURL('/docs/intro')
+  13 |   })
+  14 | 
+  15 |   test('paragraph titles are correct', async ({ po }) => {
+  16 |     await po.home.navigateToPage()
+  17 |     await po.home.verifyParagraphTitles({
+  18 |       titles: [
+  19 |         'Playwright Test',
+  20 |         'Playwright CLI',
+  21 |         'Playwright MCP',
+  22 |       ],
+  23 |     })
+  24 |   })
+  25 | })
+  26 | 
+```

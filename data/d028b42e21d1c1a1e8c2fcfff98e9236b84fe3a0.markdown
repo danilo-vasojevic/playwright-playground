@@ -1,0 +1,69 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: navigation.spec.ts >> @navigation >> logo looks okay
+- Location: tests/navigation.spec.ts:4:7
+
+# Error details
+
+```
+Error: expect(locator).toHaveScreenshot(expected) failed
+
+Locator: locator('nav[aria-label="Main"]').getByAltText('Playwright logo').first()
+Timeout: 5000ms
+  Timeout 5000ms exceeded.
+
+  Snapshot: logo.png
+
+Call log:
+  - Expect "toHaveScreenshot(logo.png)" with timeout 5000ms
+    - verifying given screenshot expectation
+  - waiting for locator('nav[aria-label="Main"]').getByAltText('Playwright logo').first()
+    - locator resolved to <img alt="Playwright logo" src="/img/playwright-logo.svg" class="themedComponent_mlkZ themedComponent--light_NVdE"/>
+  - taking element screenshot
+    - disabled all CSS animations
+  - waiting for fonts to load...
+  - fonts loaded
+  - attempting scroll into view action
+    - waiting for element to be stable
+  - Timeout 5000ms exceeded.
+
+```
+
+# Test source
+
+```ts
+  1  | import { expect, test } from '../utils/extended-test-fixtures'
+  2  | 
+  3  | test.describe('@navigation', () => {
+  4  |   test('logo looks okay', async ({ po }) => {
+  5  |     await po.home.navigateToPage()
+> 6  |     await expect(po.home.navBar.logo.first()).toHaveScreenshot('logo.png')
+     |                                               ^ Error: expect(locator).toHaveScreenshot(expected) failed
+  7  |   })
+  8  | 
+  9  |   test('nav items are visible', async ({ po }) => {
+  10 |     await po.home.navigateToPage()
+  11 |     await po.home.navBar.verifyNavigationItemsAreVisible()
+  12 |   })
+  13 | 
+  14 |   test('items under Node.js are okay', async ({ po }) => {
+  15 |     const items = [
+  16 |       { lang: 'Node.js', url: '' },
+  17 |       { lang: 'Python', url: 'python' },
+  18 |       { lang: 'Java', url: 'java' },
+  19 |       { lang: '.NET', url: 'dotnet' },
+  20 |     ]
+  21 |     await po.home.navigateToPage()
+  22 |     for (const item of items) {
+  23 |       await po.home.switchLanguageTo(item)
+  24 |     }
+  25 |   })
+  26 | })
+  27 | 
+```

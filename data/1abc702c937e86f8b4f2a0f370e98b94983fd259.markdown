@@ -1,0 +1,67 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: sample.spec.ts >> @samples >> flaky test example
+- Location: tests/sample.spec.ts:11:7
+
+# Error details
+
+```
+Error: expect(received).toEqual(expected) // deep equality
+
+Expected: false
+Received: true
+```
+
+# Test source
+
+```ts
+  1  | import { expect, test } from '../utils/extended-test-fixtures'
+  2  | 
+  3  | const startTime = Date.now()
+  4  | 
+  5  | test.describe('@samples', () => {
+  6  |   test('attachment test example', async ({ info }) => {
+  7  |     info.attach('Start Time', new Date(startTime).toString())
+  8  |     expect(Date.now()).toBeGreaterThan(startTime)
+  9  |   })
+  10 | 
+  11 |   test('flaky test example', async ({ po, info }) => {
+  12 |     await po.home.navigateToPage()
+  13 |     await test.step('Skip test if browser is Firefox or WebKit', async () => {
+  14 |       info.skipBrowser('firefox')
+  15 |       info.skipBrowser('webkit')
+  16 |     })
+  17 |     if (!info.testInfo.retry)
+> 18 |       expect(true).toEqual(false)
+     |                    ^ Error: expect(received).toEqual(expected) // deep equality
+  19 |   })
+  20 | 
+  21 |   test('geolocation test example', async ({ po, info }) => {
+  22 |     expect(info.testInfo.project.use.permissions).toContain('geolocation')
+  23 |     const configLongitude = info.testInfo.project.use.geolocation!.longitude
+  24 |     const configLatitude = info.testInfo.project.use.geolocation!.latitude
+  25 | 
+  26 |     await po.page.goto('https://gps-coordinates.org/')
+  27 |     await expect(po.page.locator('#latitude')).toHaveValue(`${configLatitude}`)
+  28 |     await expect(po.page.locator('#longitude')).toHaveValue(`${configLongitude}`)
+  29 |   })
+  30 | 
+  31 |   test.fixme('Click on button located by image', async ({ po }) => {
+  32 |     await po.home.navigateToPage()
+  33 |     await po.home.verifyUrl()
+  34 |     await po.home.clickImage('GetStarted')
+  35 |     await expect(po.page).toHaveURL(/intro/)
+  36 |     await expect(po.page.locator('h1')).toHaveText('Installation')
+  37 |     await po.home.clickImage('Logo')
+  38 |     await po.home.verifyUrl()
+  39 |     await expect(po.home.heroTitle).toContainText('reliable web automation for testing')
+  40 |   })
+  41 | })
+  42 | 
+```
