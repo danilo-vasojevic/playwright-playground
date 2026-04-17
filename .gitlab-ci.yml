@@ -15,6 +15,11 @@ test:
         SHARD_INDEX: [1, 2, 3]
         SHARD_TOTAL: 3
   script:
+    - apt-get update
+    - apt-get install -y python3 python3-pip python3-venv
+    - python3 -m venv .venv
+    - source .venv/bin/activate
+    - pip install -r services/requirements.txt
     - npm ci
     - npx playwright test --project=$PROJECT --shard=$SHARD_INDEX/$SHARD_TOTAL
   artifacts:
