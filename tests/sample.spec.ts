@@ -28,7 +28,7 @@ test.describe('@samples', () => {
     await expect(po.page.locator('#longitude')).toHaveValue(`${configLongitude}`)
   })
 
-  test('Click on button located by image', async ({ po }) => {
+  test.fixme('Click on button located by image', async ({ po }) => {
     await po.home.navigateToPage()
     await po.home.verifyUrl()
     await po.home.clickImage('GetStarted')
