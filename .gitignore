@@ -4,6 +4,7 @@ blob-report/
 playwright-report/
 
 # Ignore agent folders
+.vscode/
 .continue/
 .claude/
 .playwright-cli/
