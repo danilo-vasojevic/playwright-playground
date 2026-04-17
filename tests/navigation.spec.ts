@@ -3,7 +3,7 @@ import { expect, test } from '../utils/extended-test-fixtures'
 test.describe('@navigation', () => {
   test('logo looks okay', async ({ po }) => {
     await po.home.navigateToPage()
-    await expect(po.home.navBar.logo).toHaveScreenshot('logo.png')
+    await expect(po.home.navBar.logo.first()).toHaveScreenshot('logo.png')
   })
 
   test('nav items are visible', async ({ po }) => {

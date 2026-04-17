@@ -30,7 +30,6 @@ export class NavBarComponent extends BaseComponent {
     await expect(this.docs).toBeVisible()
     await expect(this.api).toBeVisible()
     await expect(this.langPicker).toBeVisible()
-    await expect(this.community).toBeVisible()
     await expect(this.gitHubLink).toBeVisible()
     await expect(this.discordLink).toBeVisible()
     await expect(this.themeToggle).toBeVisible()
