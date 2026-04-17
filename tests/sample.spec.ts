@@ -36,6 +36,6 @@ test.describe('@samples', () => {
     await expect(po.page.locator('h1')).toHaveText('Installation')
     await po.home.clickImage('Logo')
     await po.home.verifyUrl()
-    await expect(po.home.heroTitle).toContainText('reliable end-to-end testing')
+    await expect(po.home.heroTitle).toContainText('reliable web automation for testing')
   })
 })
